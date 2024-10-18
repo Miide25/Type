@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Typing Speed Test</title>
+    <style>
+        /* Overall Page Styling */
+        /* General Body Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+}
+
+/* Title Styling */
+h1 {
+    font-size: 3em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Quote Display Box */
+#quote-display {
+    font-size: 1.5em;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    border: 2px solid #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    text-align: center;
+}
+
+/* Input Textbox Styling */
+#quote-input {
+    font-size: 1.2em;
+    padding: 15px;
+    width: 80%;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    outline: none;
+    margin-bottom: 20px;
+}
+
+/* Timer, WPM, and Accuracy Stats Styling */
+#timer, #wpm, #accuracy {
+    font-size: 1.3em;
+    margin: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons and Select Dropdown */
+button, select {
+    padding: 12px 20px;
+    font-size: 1.2em;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+button:hover, select:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Score History and Leaderboard Section */
+#score-history, #leaderboard {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Individual Score Entry */
+.score-entry {
+    font-size: 1.2em;
+    margin: 5px 0;
+}
+
+/* ===================== Media Queries ===================== */
+
+/* For Tablets (up to 1024px) */
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 2.5em;
+    }
+
+    #quote-display, #quote-input, #score-history, #leaderboard {
+        width: 90%;
+    }
+
+    button, select {
+        padding: 10px 18px;
+        font-size: 1.1em;
+    }
+
+    #timer, #wpm, #accuracy {
+        font-size: 1.2em;
+        padding: 8px 16px;
+    }
+}
+
+/* For Mobile Devices (up to 768px) */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    #quote-display, #quote-input, #score-history, #leaderboard {
+        width: 100%;
+        padding: 15px;
+    }
+
+    button, select {
+        padding: 10px 16px;
+        font-size: 1em;
+    }
+
+    #timer, #wpm, #accuracy {
+        font-size: 1.1em;
+        padding: 6px 12px;
+    }
+}
+
+/* For Small Mobile Devices (up to 480px) */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    #quote-display, #quote-input, #score-history, #leaderboard {
+        width: 100%;
+        padding: 10px;
+    }
+
+    button, select {
+        padding: 8px 14px;
+        font-size: 0.9em;
+    }
+
+    #timer, #wpm, #accuracy {
+        font-size: 1em;
+        padding: 5px 10px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <h1>Typing Speed Test</h1>
+
+    <!-- Time Interval Selection -->
+    <label for="time-select">Select Time Interval: </label>
+    <select id="time-select">
+        <option value="30">30 Seconds</option>
+        <option value="60" selected>1 Minute</option>
+        <option value="120">2 Minutes</option>
+    </select>
+
+    <!-- Random quote to type -->
+    <div id="quote-display">Press "Start Test" to see a random quote.</div>
+
+    <!-- Textbox for user to type -->
+    <textarea id="quote-input" rows="5" placeholder="Start typing..." disabled></textarea>
+
+    <!-- Timer and stats display -->
+    <div id="timer">Time: 60s</div>
+    <div id="wpm">WPM: 0</div>
+    <div id="accuracy">Accuracy: 0%</div>
+
+    <!-- Start button -->
+    <button id="start-button" onclick="startTest()">Start Test</button>
+    <!-- Finish button -->
+    <button id="finish-button" onclick="finishTest()" style="display:none;">Finish Test</button>
+
+    <!-- Score History Section -->
+    <div id="score-history">
+        <h2>Previous Scores</h2>
+        <div id="previous-scores"></div>
+    </div>
+
+    <!-- Leaderboard Section -->
+    <div id="leaderboard">
+        <h2>Leaderboard</h2>
+        <div id="leaderboard-scores"></div>
+    </div>
+
+    <script>
+        const quoteDisplay = document.getElementById('quote-display');
+        const quoteInput = document.getElementById('quote-input');
+        const timerElement = document.getElementById('timer');
+        const wpmElement = document.getElementById('wpm');
+        const accuracyElement = document.getElementById('accuracy');
+        const startButton = document.getElementById('start-button');
+        const finishButton = document.getElementById('finish-button');
+        const previousScores = document.getElementById('previous-scores');
+        const leaderboardScores = document.getElementById('leaderboard-scores');
+        const timeSelect = document.getElementById('time-select');
+
+        let timer = 60; // Test duration in seconds (default 60s)
+        let timerInterval = null;
+        let wordCount = 0;
+        let correctChars = 0;
+        let totalChars = 0;
+        let testStarted = false;
+        let scores = []; // Track past scores
+        let leaderboard = []; // Track the top scores
+
+        const quotes = [
+            "The quick brown fox jumps over the lazy dog.",
+            "A journey of a thousand miles begins with a single step.",
+            "To be or not to be, that is the question.",
+            "All that glitters is not gold.",
+            "Fortune favors the brave."
+        ];
+
+        // Function to generate a random quote
+        function getRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            return quotes[randomIndex];
+        }
+
+        // Function to start the typing test
+        function startTest() {
+            if (testStarted) return; // Prevent multiple starts
+            testStarted = true;
+
+            // Reset values
+            wordCount = 0;
+            correctChars = 0;
+            totalChars = 0;
+            timer = parseInt(timeSelect.value); // Get selected time interval
+            wpmElement.textContent = "WPM: 0";
+            accuracyElement.textContent = "Accuracy: 0%";
+            quoteInput.value = "";  // Clear input field
+
+            // Display a random quote
+            const randomQuote = getRandomQuote();
+            quoteDisplay.textContent = randomQuote;
+            quoteInput.disabled = false; // Enable typing
+            quoteInput.focus();
+
+            // Show Finish button
+            finishButton.style.display = 'inline-block';
+
+            // Start the timer
+            timerInterval = setInterval(() => {
+                timer--;
+                timerElement.textContent = `Time: ${timer}s`;
+
+                if (timer === 0) {
+                    clearInterval(timerInterval); // Stop timer
+                    endTest();
+                }
+            }, 1000);
+
+            // Listen for input changes
+            quoteInput.addEventListener('input', checkTyping);
+        }
+
+        // Function to finish the test manually
+        function finishTest() {
+            clearInterval(timerInterval); // Stop the timer
+            endTest(); // End the test early
+        }
+
+        // Function to check user's typing input
+        function checkTyping() {
+            const quote = quoteDisplay.textContent;
+            const typed = quoteInput.value;
+
+            // Update the character counts
+            totalChars = typed.length;
+
+            // Calculate accuracy
+            correctChars = 0;
+            for (let i = 0; i < typed.length; i++) {
+                if (typed[i] === quote[i]) {
+                    correctChars++;
+                }
+            }
+
+            // Calculate WPM (words per minute)
+            wordCount = typed.split(' ').filter(Boolean).length; // Words typed
+            const wpm = Math.floor((wordCount / (parseInt(timeSelect.value) - timer)) * 60); // WPM formula
+            wpmElement.textContent = `WPM: ${wpm}`;
+
+            // Calculate accuracy
+            const accuracy = Math.floor((correctChars / totalChars) * 100);
+            accuracyElement.textContent = `Accuracy: ${accuracy}%`;
+        }
+
+        // Function to end the test
+        function endTest() {
+            quoteInput.disabled = true; // Disable input
+            startButton.textContent = "Restart Test"; // Allow restart
+            finishButton.style.display = 'none'; // Hide finish button
+            testStarted = false;
+
+            const wpm = parseInt(wpmElement.textContent.split(": ")[1]);
+            const accuracy = parseInt(accuracyElement.textContent.split(": ")[1]);
+
+            // Save the score
+            saveScore(wpm, accuracy);
+            updateLeaderboard();
+        }
+
+        // Function to save the score
+        function saveScore(wpm, accuracy) {
+            const score = { wpm, accuracy };
+            scores.push(score);
+
+            // Display previous scores
+            const scoreEntry = document.createElement('div');
+            scoreEntry.classList.add('score-entry');
+            scoreEntry.textContent = `WPM: ${wpm}, Accuracy: ${accuracy}%`;
+            previousScores.appendChild(scoreEntry);
+        }
+
+        // Function to update the leaderboard
+        function updateLeaderboard() {
+            // Sort by WPM in descending order
+            leaderboard = scores.sort((a, b) => b.wpm - a.wpm).slice(0, 5); // Top 5 scores
+
+            // Clear and update leaderboard display
+            leaderboardScores.innerHTML = '';
+            leaderboard.forEach((score, index) => {
+                const leaderboardEntry = document.createElement('div');
+                leaderboardEntry.classList.add('score-entry');
+                leaderboardEntry.textContent = `${index + 1}. WPM: ${score.wpm}, Accuracy: ${score.accuracy}%`;
+                leaderboardScores.appendChild(leaderboardEntry);
+            });
+        }
+    </script>
+
+</body>
+</html>
